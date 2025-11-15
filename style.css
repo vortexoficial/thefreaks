@@ -26,8 +26,9 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
 }
-/* Trava o scroll quando o menu mobile está aberto */
-body.nav-open {
+/* Trava o scroll quando o menu mobile ou pesquisa estão abertos */
+body.nav-open,
+body.search-open {
     overflow: hidden;
 }
 
@@ -241,6 +242,9 @@ body.nav-open {
     list-style: none;
     display: flex;
     gap: 35px;
+    background-color: #000;
+   
+    border-radius: 10px;
 }
 .main-nav a {
     color: var(--light-text);
@@ -339,6 +343,7 @@ body.nav-open {
     position: relative;
     z-index: 3;
     max-width: 800px;
+    padding: 0 20px; /* Adicionado para evitar que o texto encoste nas bordas */
 }
 .hero-content h1 {
     font-family: 'Montserrat', sans-serif;
@@ -394,7 +399,7 @@ body.nav-open {
     transition: transform 0.3s ease;
 }
 .product-card:hover { transform: translateY(-8px); }
-.product-card img { width: 100%; height: 250px; object-fit: cover; border-radius: 8px; margin-bottom: 20px; }
+.product-card img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 20px; }
 .product-card h3, .product-card p, .product-card .price { font-family: 'Montserrat', sans-serif; }
 .product-card h3 { font-weight: 700; font-size: 1.6em; margin-bottom: 10px; color: var(--light-text); }
 .product-card p { font-weight: 400; color: var(--secondary-text); font-size: 0.95em; margin-bottom: 15px; }
@@ -488,6 +493,89 @@ body.nav-open {
 .footer-bottom p { font-family: 'Montserrat', sans-serif; font-weight: 300; font-size: 0.9em; color: #888; }
 
 /* ======================================= */
+/* 7.5. ESTILOS DO POPUP DE PESQUISA       */
+/* ======================================= */
+.search-overlay-wrap {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    
+    /* Escondido por padrão */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+/* Estado aberto (controlado via JS) */
+body.search-open .search-overlay-wrap {
+    opacity: 1;
+    visibility: visible;
+}
+
+.search-popup-content {
+    background-color: var(--dark-bg);
+    border: 1px solid #3a3a3a;
+    border-radius: 12px;
+    padding: 30px;
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+.search-popup-content h3 {
+    font-size: 1.8em;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 25px;
+}
+.close-search-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: var(--secondary-text);
+    font-size: 1.5em;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+.close-search-btn:hover {
+    color: var(--light-text);
+}
+
+.search-popup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.search-popup-input {
+    padding: 15px 20px;
+    border: 1px solid #444;
+    background-color: #2e2e2e;
+    border-radius: 8px;
+    color: var(--light-text);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 1.1em;
+}
+.search-popup-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 10px rgba(252, 209, 22, 0.3);
+}
+.search-popup-btn {
+    font-size: 1.1em;
+    padding: 15px;
+}
+
+
+/* ======================================= */
 /* 8. RESPONSIVIDADE (MEDIA QUERIES)       */
 /* ======================================= */
 
@@ -500,12 +588,13 @@ body.nav-open {
     }
     
     /* --- MENU MOBILE (COM FUNDO) --- */
+    /* CORREÇÃO MENU: Esta é a regra que aplica o fundo */
     .main-nav {
         display: none; 
         position: fixed;
         inset: 0;
         
-        /* CORREÇÃO MENU: Fundo escuro e com desfoque */
+        /* O FUNDO E O BLUR SÃO DEFINIDOS AQUI */
         background-color: rgba(0, 0, 0, 0.85);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
@@ -575,6 +664,7 @@ body.nav-open {
     }
 
     /* Mostra o menu (com fundo) quando o body tem a classe */
+    /* Esta regra APENAS muda o 'display', ela não remove o fundo */
     body.nav-open .main-nav { 
         display: flex; 
     }

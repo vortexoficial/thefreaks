@@ -11,6 +11,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
+    // --- LÓGICA DO POPUP DE PESQUISA (NOVO) ---
+    const openSearchBtn = document.getElementById('open-search');
+    const closeSearchBtn = document.getElementById('close-search');
+    const searchOverlay = document.getElementById('search-overlay');
+
+    if (openSearchBtn && searchOverlay) {
+        // Abrir o popup
+        openSearchBtn.addEventListener('click', (e) => {
+            e.preventDefault(); // Impede o link de pular para o topo
+            document.body.classList.add('search-open');
+        });
+    }
+
+    if (closeSearchBtn) {
+        // Fechar pelo botão 'X'
+        closeSearchBtn.addEventListener('click', () => {
+            document.body.classList.remove('search-open');
+        });
+    }
+    
+    if (searchOverlay) {
+        // Fechar clicando no fundo (overlay)
+        searchOverlay.addEventListener('click', (e) => {
+            // Se o clique foi no próprio overlay (fundo) e não no popup
+            if (e.target.id === 'search-overlay') {
+                document.body.classList.remove('search-open');
+            }
+        });
+    }
+    
 });
 
 // =======================================
